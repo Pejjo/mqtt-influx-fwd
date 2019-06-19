@@ -1,0 +1,18 @@
+[CONFIG]
+influx-host = 127.0.0.1
+#inlux-port = xxxx
+mqtt-host = 127.0.0.1
+#mqtt-port = xxxx
+mqtt-topic = sensors/,dics/
+debug-level= DEBUG
+
+[sensors/vind/temperature]
+measurement = vinden
+tags = {"location":"vind","measurement":"temperature"}
+format = float
+
+
+
+
+
+
