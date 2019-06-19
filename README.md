@@ -1,4 +1,4 @@
-# IoT MQTT to InfluxDB forwarder #
+# IoT MQTT to InfluxDB configurable forwarder #
 
 This tool forwards IoT sensor data from an MQTT broker to an InfluxDB instance. It is based on the code for  
 forwarder.py - forwards IoT sensor data from MQTT to InfluxDB Copyright (C) 2016 Michael Haas <haas@computerlinguist.org>
