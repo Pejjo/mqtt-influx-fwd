@@ -28,40 +28,21 @@ the raw values.
 
 ## Translation to InfluxDB data structure ##
 
-The MQTT topic structure and measurement values are mapped as follows:
+The MQTT topic structure and measurement values are mapped in a config file.
+First part is general:
+[CONFIG]
+influx-host = 127.0.0.1
+inlux-port = xxxx
+mqtt-host = 127.0.0.1
+mqtt-port = xxxx
+mqtt-topic = sensors/,dics/ 
+debug-level= DEBUG
 
-- the measurement name becomes the InfluxDB measurement name
-- the measurement value is stored as a field named 'value'.
-- the node name is stored as a tag named sensor\_node'
-
-### Example translation ###
-
-The following log excerpt should make the translation clearer:
-
-    DEBUG:forwarder.MQTTSource:Received MQTT message for topic /weather/uv with payload 0
-    DEBUG:forwarder.InfluxStore:Writing InfluxDB point: {'fields': {'value': 0.0}, 'tags': {'sensor_node': 'weather'}, 'measurement': 'uv'}
-    DEBUG:forwarder.MQTTSource:Received MQTT message for topic /weather/temp with payload 18.80
-    DEBUG:forwarder.InfluxStore:Writing InfluxDB point: {'fields': {'value': 18.8}, 'tags': {'sensor_node': 'weather'}, 'measurement': 'temp'}
-    DEBUG:forwarder.MQTTSource:Received MQTT message for topic /weather/pressure with payload 1010.77
-    DEBUG:forwarder.InfluxStore:Writing InfluxDB point: {'fields': {'value': 1010.77}, 'tags': {'sensor_node': 'weather'}, 'measurement': 'pressure'}
-    DEBUG:forwarder.MQTTSource:Received MQTT message for topic /weather/bat with payload 4.55
-    DEBUG:forwarder.InfluxStore:Writing InfluxDB point: {'fields': {'value': 4.55}, 'tags': {'sensor_node': 'weather'}, 'measurement': 'bat'}
-
-## Complex measurements ##
-
-If the MQTT message payload can be decoded into a JSON object, it is considered a
-complex measurement: a single measurement consisting of several related data points.
-The JSON object is interpreted as multiple InfluxDB field key-value pairs.
-In this case, there is no automatic mapping of the measurement value to the field
-named 'value'.
-
-### Example translation ###
-
-An example translation for a complex measurement:
-
-    DEBUG:forwarder.MQTTSource:Received MQTT message for topic /heaterroom/boiler-led with payload {"valid":true,"dark_duty_cycle":0,"color":"amber"}
-    DEBUG:forwarder.InfluxStore:Writing InfluxDB point: {'fields': {u'color': u'amber', u'valid': 1.0, u'dark_duty_cycle': 0.0}, 'tags': {'sensor_node': 'heaterroom'}, 'measurement': 'boiler-led'}
-
+For each mqtt-influx pair, a section is added 
+[mqtt/topic]
+measurement = maren
+tags = {"location":"Maren","measurement":"lufttemperatur","sensor":"temp"}
+format = float #Can also be int or str
 
 ### Example InfluxDB query ###
 
